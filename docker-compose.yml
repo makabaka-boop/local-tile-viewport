@@ -1,0 +1,20 @@
+services:
+  # 一次性验收服务：类型检查 + 单元测试，退出码即验收结果
+  verify:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: verify
+    image: image-workbench-verify:latest
+    working_dir: /app
+    command: ["sh", "-c", "npm run typecheck && npm run test"]
+
+  # 工作台 Web 界面（docker compose up web 后访问 http://localhost:5173）
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: web
+    image: image-workbench-web:latest
+    ports:
+      - "5173:80"
